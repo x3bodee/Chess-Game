@@ -38,7 +38,7 @@ table{
     
     margin: 20px 10px;
     background-color: #ffffffb5;
-    color: red;
+    color: white;
     
 }
 
@@ -78,4 +78,21 @@ td{
 
 .dark:hover{
     border: #342217;
+}
+
+.scaleToDown{
+    transform: scale(1, -1);
+}
+
+.whiteScaleToRight{
+    transform: scale(-1, 1);
+}
+
+.blackScaleToleft{
+    transform: scale(-1, 1);
+    transform: rotate(180deg);
+}
+
+#black{
+    color: red;
 }
