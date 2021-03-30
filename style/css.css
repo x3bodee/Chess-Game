@@ -50,8 +50,7 @@ th{
 
 td{
     margin: 0;
-    padding: 0;
-    border: 3px solid #faf6f3;
+    padding: 2px;
     width: 50px;
     height: 50px;
     text-align: center;
@@ -64,21 +63,24 @@ td{
 
 .light{
     background-color: #cfa977;
+    /* border: 3px solid #cfa977; */
     
 }
 
 .dark{
+    /* border: 3px solid rgb(29, 27, 27); */
     background-color: rgb(29, 27, 27);
 }
 
 .light:hover{
-    border: #342217;
+    font-size: 39px;
 }
 
 
 .dark:hover{
-    border: #342217;
+    font-size: 39px;
 }
+
 
 .scaleToDown{
     transform: scale(1, -1);
