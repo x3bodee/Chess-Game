@@ -15,14 +15,16 @@
 ## Planning 
 
 #### Board Structure
-In this image, the structure of the board as you can see it's a two dimensional array [x][y], I did it like because it's will be easier for me to calculate the potential moves of any chess piece.
+
+In this image, the structure of the board as you can see it's a **two dimensional array [x][y]**, I did it like because it's will be easier for me to calculate the potential moves of any chess piece.
+
 ![Planning for the project : Board Structure Image](/images/board.PNG)
 
 ### Pieces Calculations
 
 #### Piece #1: Pawn Moves
 
-pawn conditions are in if(Condition) 
+pawn conditions are in **if(Condition)** 
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up (white) | x - 1 | y | x != 0
@@ -39,7 +41,7 @@ Up to Left (black)(kill) | x + 1 | y - 1 | x != 7 && y > 0
 
 #### Piece #2: King Moves
 
-king conditions are in if(Condition) 
+king conditions are in **if(Condition)** 
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up (kill) | x - 1 | y | x != 0
@@ -56,7 +58,7 @@ Left (kill) | x | y - 1 | x != 7
 
 #### Piece #3: Knight Moves
 
-knight conditions are in if(Condition) 
+knight conditions are in **if(Condition)** 
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up to Right (kill) | x - 2 | y + 1 | x > 1 && y < 7
@@ -73,7 +75,7 @@ Left Down (kill) | x + 1 | y - 2 | x != 7 && y > 1
 
 #### Piece #4: Rook Moves
 
-rook conditions are in while(Condition) 
+rook conditions are in **while(Condition)** 
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up (kill) | x - 1 | y | x != 0
@@ -86,7 +88,7 @@ Left (kill) | x | y - 1 | y > 0
 
 #### Piece #5: Bishop Moves
 
-bishop conditions are in while(Condition) 
+bishop conditions are in **while(Condition)** 
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up Left (kill) | x - 1 | y - 1 | x != 0 && y != 0
@@ -97,9 +99,9 @@ Down Right (kill) | x + 1 | y + 1 | x != 7 && y != 7
 ![Planning for the project : Bisshop possible moves Image](/images/bishop.PNG)
 
 
-#### Piece #5: Queen Moves
+#### Piece #6: Queen Moves
 
-queen conditions are in while(Condition) it's basically bishop and rook movement
+queen conditions are in **while(Condition)** it's basically bishop and rook movement
 Direction   |   X   |   Y   |   Condition   | 
 ----------- | ----- | ----- | ------------- |
 Up (kill) | x - 1 | y | x != 0
@@ -125,34 +127,37 @@ second click method will store the indexes of our destination if the destination
 
 then we will increment the counter of the player moves so it's will be switched, after that we will restore the colors to it's original state and rotate the table 180deg and give the other player turn.
 
-board --> possible moves --> players -- > click events --> switch between player --> check for game over --> END 
+**board --> possible moves --> players -- > click events --> switch between player --> check for game over --> END** 
 
 ---
 
 ## My Favorite Function 
 
 ### EventLClick(this)
+
 #### Why it's may favorite ?
-because all the logic will go from this method so we can say it's the heart of the game.
-* it's control which player can play and not.
-* if first click its will color the possible moves.
-* if second click it's will remove all possible moves color.
-* rotate the board.
-* kill and move chess pieces.
-* show dead pieces.
-* check for checkmate.
+
+Because all the logic will go from this method so we can say **it's the heart of the game**.
+
+* It's control which player can play and not.
+* If first click its will color the possible moves.
+* If second click it's will remove all possible moves color.
+* Rotate the board.
+* Kill and move chess pieces.
+* Show dead pieces.
+* Check for checkmate.
 * Calling GameOver.
 
 ---
 
 ## Future Iterations 
 
-### * Add castling move.(Unsolved Problem)
-### * improve the speed.
-### * improve the responsiveness.
-### * improve the style.
-### * add dark mode.
-### * take the colors customizations from the user.
-### * Add AI.
-### * Add other chess modes like 3-Check, Speed Chess.
+#### * Add castling move.(Unsolved Problem)
+#### * improve the speed.
+#### * improve the responsiveness.
+#### * improve the style.
+#### * add dark mode.
+#### * take the colors customizations from the user.
+#### * Add AI.
+#### * Add other chess modes like 3-Check, Speed Chess.
 

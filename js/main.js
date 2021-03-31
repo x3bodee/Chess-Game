@@ -13,6 +13,7 @@ var deadWhiteList2=document.querySelector(".deadWhite #two");
 var deadWhiteCounter=0;
 var deadBlackCounter=0;
 
+// this method will put the dead pieces in dead list
 function addDead(type,family){
     if(family == "white"){
         if( deadWhiteCounter >8 ){
@@ -78,7 +79,7 @@ function addDead(type,family){
 
 // --------------------------- Setting board[][] array --------------------------- \\
 
-// git all the rows
+// git all the rows 
 var td = $("tr");
 // create board array
 var board=[];
@@ -91,12 +92,11 @@ for (let i = 0; i < 8; i++) {
     console.log(board[i]);
 }
 
+// add to each cell an ID
 for (let i = 0; i < board.length; i++) {
     const column = board[i];
     for (let j = 0; j < column.length; j++) {
         column[j].id=(i+","+j);
-        //column[j].style.color="red";
-        //column[j].innerHTML=i+","+j;   
     }
 }
 
@@ -143,14 +143,16 @@ function Player(name, family) {
         }
 }
 
+// get player1 name from the user
 var p1Name = prompt("Please enter first player name");
-
+// if player1 name is null then add a name
 if (p1Name == null) {
   p1Name="First player"
 }
 
+// get player2 name from the user
 var p2Name = prompt("Please enter second player name");
-
+// if player2 name is null then add a name
 if (p2Name == null) {
     p2Name="Second player"
 }
@@ -257,52 +259,77 @@ function updateboard(board, player,family) {
     }
 }
 
+//update the board with player1 and player 2 pieces positions
 updateboard(board,player1,player1.family);
 updateboard(board,player2,player2.family);
 
 // --------------------------- possibleMoves --------------------------- \\
 
+// this method will be call when the pawn at the top of the table
+// then it's will switch the pawn to queen
 function switchPawntoQueen(i,j,family){
-
+    
     if (family == player1.family) {
+        // replace the pawn html with queen html
         board[i][j].innerHTML=player1.pices.queen.value;
+        // change the type from pawn to queen
         board[i][j].setAttribute("type","queen");
        
     }else if(family == player2.family){
+        // replace the pawn html with queen html
         board[i][j].innerHTML=player2.pices.queen.value;
+        // change the type from pawn to queen
         board[i][j].setAttribute("type","queen");
     }
 }
 
+// this method will be called to calculate the possible moves for pawn
+// and return array of possible moves.
+// this method is commented similar methods are king and knight
 function possibleMovesForPawn(loction) {
+    
+    // create the array
     let pawnMoves = [];
+    // the location will come like this 3,4
+    // so cahrAt(0) will be i
     let i = parseInt(loction.charAt(0));
+    // and cahrAt(2) will be j
     let j = parseInt(loction.charAt(2));
+    // store the family of the original piece
     let myFamily = board[i][j].getAttribute("family");
-    //console.log("MY FAMILY IS : "+myFamily)
-    console.log("i= " + i + ", j= " + j);
 
+    // if the family is white then we will calculate In a specific way
     if (myFamily == "white") {
 
         // up for white
         if (i != 0) {
-
+            // here we will calculate the new x or i index
             let x = i - 1;
             let y = j;
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            // if this index dose not have family then push the possible move
+            // in pawn up we dont kill so if it's from our family or from the other 
+            // family we will not push it as a possible move
             if (upfamily == null){
                 pawnMoves.push((x + "," + y));
             }
+            
         }
         // up up for white
         if (i != 0) {
-
+            // up up of the white will only work when the white pawn is at x = 6 
             if ( i == 6 ) {
+                
+                // here we will calculate the new x or i index
                 let x = i - 2;
                 let y = j;
+                // get the family of the new possible move
                 let upfamily = board[x][y].getAttribute("family");
+                // if this index dose not have family and the index up is empty
+                // then push this is a possible move in pawn up up we dont kill so if  
+                // it's from our family or from the other family we will not push it as a possible move
                 if (upfamily == null){
-                    console.log(board[x-1][y].getAttribute("family") == myFamily +" *********")
                     if (board[i-1][y].getAttribute("family") != myFamily) {
                         pawnMoves.push((x + "," + y));
                     }
@@ -313,14 +340,20 @@ function possibleMovesForPawn(loction) {
 
         // up to right for white
         if (i != 0 && j < 7) {
+            // here we will calculate the new x or i index
             let x = i - 1;
+            // here we will calculate the new y or j index
             let y = j + 1;
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            // here will check for two possible move if the up right is an enemy
+            // and it's not a king of the enemy then push with k msg for kill 
             if (upfamily == "black" && board[x][y].getAttribute("type") != "king") {
-                console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            
+            // in else if we will check of it's not my family and the enemy is the
+            // king then we will store location with kl for check mate method
             }else if (upfamily == "black" && board[x][y].getAttribute("type") == "king") {
-                console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "kl"));
             }
             
@@ -328,40 +361,57 @@ function possibleMovesForPawn(loction) {
 
         // up to left for white
         if (i != 0 && j > 0) {
+            // here we will calculate the new x or i index
             let x = i - 1;
+            // here we will calculate the new y or j index
             let y = j - 1;
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            
+            // here will check for two possible move if the up right is an enemy
+            // and it's not a king of the enemy then push with k msg for kill 
             if (upfamily == "black" && board[x][y].getAttribute("type") != "king") {
-                console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+
+            // in else if we will check of it's not my family and the enemy is the
+            // king then we will store location with kl for check mate method
             }else if (upfamily == "black" && board[x][y].getAttribute("type") == "king") {
-                console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "kl"));
             }
         }
     } else {
-        console.log(myFamily+" %%%%%%");
+       // if the type is black then the up is the opposite of up white
 
         // up for black
         if (i != 7) {
-
+            // here we will calculate the new x or i index
             let x = i + 1;
             let y = j;
+
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            // if this index dose not have family then push the possible move
+            // in pawn up we dont kill so if it's from our family or from the other 
+            // family we will not push it as a possible move
             if (upfamily == null){
                 pawnMoves.push((x + "," + y));
             }
         }
 
         // up up for black
+        // up up of the black will only work when the black pawn is at x = 1 
         if (i != 7) {
-
+            
             if ( i == 1 ) {
+                // here we will calculate the new x or i index
                 let x = i + 2;
                 let y = j;
+                // get the family of the new possible move
                 let upfamily = board[x][y].getAttribute("family");
+                // if this index dose not have family and the index up is empty
+                // then push this is a possible move in pawn up up we dont kill so if  
+                // it's from our family or from the other family we will not push it as a possible move
                 if (upfamily == null){
-                    console.log(board[x-1][y].getAttribute("family") == myFamily +" *********")
                     if (board[i+1][y].getAttribute("family") != myFamily) {
                         pawnMoves.push((x + "," + y));
                     }
@@ -372,28 +422,39 @@ function possibleMovesForPawn(loction) {
 
         // up to right for black
         if (i != 7 && j < 7) {
+            // here we will calculate the new x or i index
             let x = i + 1;
+            // here we will calculate the new y or j index
             let y = j + 1;
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            // here will check for two possible move if the up right is an enemy
+            // and it's not a king of the enemy then push with k msg for kill 
             if (upfamily == "white" && board[x][y].getAttribute("type") != "king") {
-                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+
+            // in else if we will check of it's not my family and the enemy is the
+            // king then we will store location with kl for check mate method
             }else if (upfamily == "white" && board[x][y].getAttribute("type") == "king") {
-                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "kl"));
             }
         }
 
         // up to left for black
         if (i != 7 && j > 0) {
+            // here we will calculate the new x or i index
             let x = i + 1;
+            // here we will calculate the new y or j index
             let y = j - 1;
+            // get the family of the new possible move
             let upfamily = board[x][y].getAttribute("family");
+            // here will check for two possible move if the up right is an enemy
+            // and it's not a king of the enemy then push with k msg for kill 
             if (upfamily == "white" && board[x][y].getAttribute("type") != "king") {
-                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            // in else if we will check of it's not my family and the enemy is the
+            // king then we will store location with kl for check mate method
             }else if (upfamily == "white" && board[x][y].getAttribute("type") == "king") {
-                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "kl"));
             }
         }
@@ -401,27 +462,24 @@ function possibleMovesForPawn(loction) {
     return pawnMoves;
 }
 
+// this method will be called to calculate the possible moves for king
+// and return array of possible moves.
 function possibleMovesForKing(loction) {
     let kingMoves = [];
     let i = parseInt(loction.charAt(0));
     let j = parseInt(loction.charAt(2));
     let myFamily = board[i][j].getAttribute("family");
-    console.log("i= " + i + ", j= " + j);
-
-
+   
     // up
     if (i != 0) {
         let x = i - 1;
         let y = j;
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
-            console.log("up x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -432,13 +490,10 @@ function possibleMovesForKing(loction) {
         let y = j + 1;
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -449,13 +504,10 @@ function possibleMovesForKing(loction) {
         let y = j - 1;
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
-            //console.log("up to left x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -469,10 +521,8 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -485,10 +535,8 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -501,10 +549,8 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -518,10 +564,8 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -534,10 +578,8 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
         } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
-            //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "kl"));
         }
     }
@@ -547,13 +589,14 @@ function possibleMovesForKing(loction) {
     return kingMoves;
 }
 
+// this method will be called to calculate the possible moves for pawn
+// and return array of possible moves.
 function possibleMovesForKnight(loction){
     let knightMoves=[];
     let i=parseInt(loction.charAt(0));
     let j=parseInt(loction.charAt(2));
     let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
+    
     // up to right
     if(i > 1 && j < 7){
         let x = i - 2;
@@ -669,20 +712,32 @@ function possibleMovesForKnight(loction){
     return knightMoves;
 }
 
+// this method will be called to calculate the possible moves for rook
+// and return array of possible moves.
+// this method is commented similar methods are bishop and queen 
 function possibleMovesForRook(loction){
+    // create the array
     let rookMoves=[];
+    // the location will come like this 3,4
+    // so cahrAt(0) will be i
     let i=parseInt(loction.charAt(0));
+    // and cahrAt(2) will be j
     let j=parseInt(loction.charAt(2));
+    // store the family of the original piece
     let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
+    // create temp x and y because we will use the a while loop 
+    // so the x and y will be dynamic
     let tempX = i; 
     let tempY = j; 
     
     // up
+    // while x != 0 then decrement x by 1 and store the new possible move
+    // then if the family of the possible move is null then push regular move
+    // if it's an enemy then store it with k flag k represent kill
+    // if it's enemy and the type is king then store it with the kl flag
+    // k represent kill and l represent the checkmate
     while( tempX !=0 ){
         tempX -= 1;
-        console.log(tempX+","+tempY);
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
@@ -701,6 +756,11 @@ function possibleMovesForRook(loction){
     tempX = i; 
     
     // down
+    // while x != 7 then increment x by 1 and store the new possible move
+    // then if the family of the possible move is null then push regular move
+    // if it's an enemy then store it with k flag k represent kill
+    // if it's enemy and the type is king then store it with the kl flag
+    // k represent kill and l represent the checkmate.
     while( tempX !=7 ){
         tempX += 1;
         console.log(tempX+","+tempY);
@@ -722,6 +782,11 @@ function possibleMovesForRook(loction){
     tempY = j; 
     
     // right
+    // while x < 7 then increment y by 1 and store the new possible move
+    // then if the family of the possible move is null then push regular move
+    // if it's an enemy then store it with k flag k represent kill
+    // if it's enemy and the type is king then store it with the kl flag
+    // k represent kill and l represent the checkmate
     while( tempY < 7 ){
         tempY += 1;
         console.log(tempX+","+tempY);
@@ -742,6 +807,11 @@ function possibleMovesForRook(loction){
     tempY = j; 
     
     // left
+    // while x != 7 then decrement x by 1 and store the new possible move
+    // then if the family of the possible move is null then push regular move
+    // if it's an enemy then store it with k flag k represent kill
+    // if it's enemy and the type is king then store it with the kl flag
+    // k represent kill and l represent the checkmate
     while( tempY > 0 ){
         tempY -= 1;
         console.log(tempX+","+tempY);
@@ -762,22 +832,21 @@ function possibleMovesForRook(loction){
     return rookMoves;
 }
 
+// this method will be called to calculate the possible moves for bishop
+// and return array of possible moves.
 function possibleMovesForBishop(loction){
     let bishopMoves=[];
     let i=parseInt(loction.charAt(0));
     let j=parseInt(loction.charAt(2));
     let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
+    
     let tempX = i; 
     let tempY = j; 
-
 
     // up to left
     while( tempX !=0 && tempY != 0){
         tempX -= 1;
         tempY -= 1;
-        console.log(tempX+","+tempY);
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
@@ -799,7 +868,6 @@ function possibleMovesForBishop(loction){
     while( tempX != 0 && tempY != 7 ){
         tempX -= 1;
         tempY += 1;
-        console.log(tempX+","+tempY);
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
@@ -813,7 +881,6 @@ function possibleMovesForBishop(loction){
             break;
         }
     }
-
     
     tempX = i;
     tempY = j;
@@ -822,7 +889,6 @@ function possibleMovesForBishop(loction){
     while( tempX != 7 && tempY != 0 ){
         tempX += 1;
         tempY -= 1;
-        console.log(tempX+","+tempY);
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
@@ -845,7 +911,6 @@ function possibleMovesForBishop(loction){
     while( tempX !=7 && tempY != 7){
         tempX += 1;
         tempY += 1;
-        console.log(tempX+","+tempY);
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
@@ -863,6 +928,8 @@ function possibleMovesForBishop(loction){
     return bishopMoves;
 }
 
+// this method will be called to calculate the possible moves for queen
+// and return array of possible moves.
 function possibleMovesForQueen(loction) {
     let queenMoves = [];
     
@@ -882,6 +949,8 @@ function possibleMovesForQueen(loction) {
     return queenMoves;
 }
 
+// this method will take the type and calculate 
+// the possible moves depending on the type of the piece 
 function possibleMoves(type,location){
     
     if (type == "pawn") {
@@ -915,6 +984,7 @@ function possibleMoves(type,location){
 
 // --------------------------- checkmate --------------------------- \\
 
+// this method will check for kl flag for check mate
 function isKill(arr){
     for (let i = 0; i < arr.length; i++) {
         let l=arr[i].length;
@@ -925,7 +995,8 @@ function isKill(arr){
     return false;
 }
 
-// it's needs improvments
+// get the possible move of the piece then if it's have the flag 
+// kl then it's a checkmate then alert the player
 function checkmate(type,location) {
     let arr = possibleMoves(type, location);
     tt=arr;
@@ -938,7 +1009,6 @@ function checkmate(type,location) {
             console.log(player1.name + " watch out it's Checkmate");
         }
     }
-
     console.log("no Checkmate :(");
 }
 
@@ -957,50 +1027,63 @@ $(document).ready(function () {
     });
 
     function EventLClick(tthis) {
-
-        console.log("inside black family click event")
+        // if it's equal null then that's mean there is no
+        // selected cell or piece
         if (clickonce == null) {
-            // then it's white turn
+            // then it's white turn if the bcounter and wcounter then it's white turn
             if (bcounter == wcounter) {
+                // if the selected cell or piece is from family white
+                // then this is player 1 turn and there is no problem
                 if (tthis.attr("family") == "white") {
                     let id = tthis.attr("id");
+                    // add color to the possible moves
                     onClickColor(id);
-                    console.log(tthis.html());
-                    console.log(tthis.attr('id'));
-                    console.log(tthis.attr('class'));
+                    // store the cell or piece so on second click 
+                    //the clickonce will not equal null
                     clickonce = tthis;
 
-                    console.log("check for switch PAWN TO QUEEN " + (id.charAt(0) == 0 && tthis.attr("type") == "pawn"));
+                    // check for white pawn switch to queen 
                     if (id.charAt(0) == 0 && tthis.attr("type") == "pawn") {
                         switchPawntoQueen(id.charAt(0), id.charAt(2), "white");
                         wcounter++;
-                        $(".chess-board").toggleClass('rotateTable');
+                        $("section").toggleClass('rotateTable');
+                        // if it's true and the pawn switched to queen then 
+                        // the turn will be goning to the black
+                        // set the clickonce to null so it's will restart the process
                         clickonce = null;
                     }
 
-
+                    // else family of selected element is black then alert wrong turn
+                    // it's white turn now
                 } else {
                     alert("Select one of your pices\nit is " + p1Name + " turn now");
 
                 }
             } else {
+                // if the selected cell or piece is from family black
+                // then this is player 2 turn and there is no problem
                 if (tthis.attr("family") == "black") {
                     let id = tthis.attr("id");
+                    // add color to the possible moves
                     onClickColor(id);
-                    console.log(tthis.html());
-                    console.log(tthis.attr('id'));
-                    console.log(tthis.attr('class'));
+                    // store the cell or piece so on second click 
+                    //the clickonce will not equal null
                     clickonce = tthis;
 
-                    console.log("check for switch PAWN TO QUEEN " + (id.charAt(0) == 7 && tthis.attr("type") == "pawn"));
+                    // check for black pawn switch to queen 
                     if ((id.charAt(0) == 7) && tthis.attr("type") == "pawn") {
                         switchPawntoQueen(id.charAt(0), id.charAt(2), "black");
                         bcounter++;
-                        $(".chess-board").toggleClass('rotateTable');
+                        $("section").toggleClass('rotateTable');
+                        // if it's true and the pawn switched to queen then 
+                        // the turn will be goning to the white
+                        // set the clickonce to null so it's will restart the process
+                        
                         clickonce = null;
                     }
 
-
+                    // else family of selected element is white then alert wrong turn
+                    // it's black turn now
                 } else {
                     alert("Select one of your pices\nit is " + p2Name + " turn now");
                 }
@@ -1008,54 +1091,59 @@ $(document).ready(function () {
 
 
         } else {
+            // if the clickonce is not null then 
+            // this is mean it's second click
+            // store the second click cell
             let secondClick = tthis;
 
+            // if the moves array include the id of the secondClick
+            // this mean we are moving clickonce piece to an empty space
             if (moves.includes(secondClick.attr("id"))) {
 
-                console.log("ID = " + clickonce.attr("id"));
+                // remove the colors of the possible moves
                 onSecondClickColor(clickonce.attr("id"));
 
 
-
+                // this will switch the clickonce to 
+                // the cell of theclicksecond.
                 let id = tthis.attr("id");
                 let i = parseInt(id.charAt(0));
                 let j = parseInt(id.charAt(2));
-
-
                 let family = clickonce.attr("family");
                 let type = clickonce.attr("type");
-
-                console.log("family = " + family + "   , type = " + type);
                 let innerhtmll = clickonce.html();
-
                 board[i][j].innerHTML = innerhtmll;
                 board[i][j].setAttribute("family", family);
                 board[i][j].setAttribute("type", type);
-
-                //
                 clickonce.html("");
                 clickonce.attr("family", null);
                 clickonce.attr("type", null);
                 clickonce = null;
 
+                // if the family is white increment the white counter
+                // so we can switch the turns
                 if (family == "white")
                     wcounter++;
                 else
                     bcounter++;
 
+                // rotate the section
                 $("section").toggleClass('rotateTable');
 
-            } else if (moves.includes(secondClick.attr("id") + "k")) {
+            } 
+            // if the moves array include the id and the k flag of the secondClick
+            // this mean we are killing the secondClick piece so that we can
+            // put clickonce piece in it's place
+            else if (moves.includes(secondClick.attr("id") + "k")) {
+                
+                // gatharing information of the kill swap and print in it
+
                 let secondFamily = secondClick.attr("family");
                 let secondType = secondClick.attr("type");
                 let secondhtml = secondClick.html("type");
-
-
-
-                console.log("ID = " + clickonce.attr("id"));
+                
+                // remove the colors of the possible moves
                 onSecondClickColor(clickonce.attr("id"));
-
-
 
                 let id = tthis.attr("id");
                 let i = parseInt(id.charAt(0));
@@ -1066,7 +1154,6 @@ $(document).ready(function () {
                 let type = clickonce.attr("type");
 
                 console.log("the " + type + " from " + family + " family Killed the " + secondType + " of the " + secondFamily + " family");
-                //console.log(");
                 let innerhtmll = clickonce.html();
 
                 board[i][j].innerHTML = innerhtmll;
@@ -1078,6 +1165,9 @@ $(document).ready(function () {
                 clickonce.attr("type", null);
                 clickonce = null;
 
+                // if the family is white increment the white counter
+                // so we can switch the turns and add the dead element
+                // to it's corresponding list
                 if (family == "white"){
                     wcounter++;
                     addDead(secondType,secondFamily);
@@ -1086,17 +1176,22 @@ $(document).ready(function () {
                     addDead(secondType,secondFamily);
                 }
 
+                // rotate the section
                 $("section").toggleClass('rotateTable');
-            } else if (moves.includes(secondClick.attr("id") + "kl")) {
+
+            } 
+            // if the moves array include the id and the kl flag of the secondClick
+            // this mean we are killing the king of the opposite family so that
+            // we will end the game
+            else if (moves.includes(secondClick.attr("id") + "kl")) {
+                
+                // gatharing information of the kill the opposite family king
+            
                 let secondFamily = secondClick.attr("family");
                 let secondType = secondClick.attr("type");
 
-
-
-                console.log("ID = " + clickonce.attr("id"));
+                // remove the colors of the possible moves
                 onSecondClickColor(clickonce.attr("id"));
-
-
 
                 let id = tthis.attr("id");
                 let i = parseInt(id.charAt(0));
@@ -1107,19 +1202,20 @@ $(document).ready(function () {
                 let type = clickonce.attr("type");
 
                 console.log("the " + type + " from " + family + " family Killed the " + secondType + " of the " + secondFamily + " family");
-                //console.log(");
                 let innerhtmll = clickonce.html();
 
                 board[i][j].innerHTML = innerhtmll;
                 board[i][j].setAttribute("family", family);
                 board[i][j].setAttribute("type", type);
 
-                //$(".chess-board").toggleClass('rotateTable');
+                
                 clickonce.html("");
                 clickonce.attr("family", null);
                 clickonce.attr("type", null);
                 clickonce = null;
 
+                // game is over because one of the kings is dead
+                // unbind the click event
                 if (family == "white")
                     gameOver(family);
                 else
@@ -1127,12 +1223,16 @@ $(document).ready(function () {
 
 
             } else {
+                // if the selection of the second click is
+                // not one of the possible moves then log
                 console.log("Wrong selection");
+                // and remove colors and set it to null so 
+                // we can start the selecting again for the smae player
                 onSecondClickColor(clickonce.attr("id"));
                 clickonce = null;
-
-                //removeAllBEvents();
             }
+            // at the end we will check for check mate at the end of
+            // each second click
             let idd = secondClick.attr("id");
             let typee = secondClick.attr("type");
             checkmate(typee,idd);
@@ -1141,7 +1241,7 @@ $(document).ready(function () {
 
 });
 
-
+// this metod will set colors of possible moves
 function onClickColor(id) {
     let i = id.charAt(0);
     let j = id.charAt(2);
@@ -1162,7 +1262,7 @@ function onClickColor(id) {
         }
     }
 }
-
+// this metod will remove the colors of possible moves
 function onSecondClickColor(id) {
     if (moves != null) {
         let arr = moves;
@@ -1189,6 +1289,8 @@ function onSecondClickColor(id) {
 
 // --------------------------- GameOver --------------------------- \\
 
+// this will alert the winner of the game 
+// and unbind the event listener
 function gameOver(type){
     (type == "white")? 
     alert("Game Over the winner is "+p1Name)
