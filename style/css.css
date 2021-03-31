@@ -1,6 +1,8 @@
 body{
     margin: 0;
     padding: 0;
+    background-color: #779455;
+    
 }
 
 nav{
@@ -10,7 +12,7 @@ nav{
     align-items: center;
     height: 50px;
     width: 100%;
-    background-color: #342217;
+    background-color: #ebebd0;
 }
 
 section{
@@ -28,8 +30,8 @@ ul{
 }
 
 nav a{
-    color: #d19a53;
-    font-size: 25px;
+    color: #779455;;
+    font-size: 30px;
     text-align: center;
     text-decoration: none;
 }
@@ -59,17 +61,37 @@ td{
     cursor: pointer; 
 }
 
+.deadWhite{
+    color: #f8f8f7;
+    text-shadow: 2px 0px 10px rgba(29, 29, 29, 0.8);
+}
 
+.deadBlack{
+    color: #565352;
+    text-shadow: 1px 0px 10px rgba(253, 253, 253, 0.8);
+}
+
+.chess-board {
+    margin-top: 40px;
+    -moz-transition: transform 2s;
+    -webkit-transition: transform 2s;
+    transition: transform 2s;
+  }
+  
+.rotateTable {
+    transform: rotate(+180deg);
+}
 
 .light{
-    background-color: #cfa977;
+    background-color: #ebebd0;
     /* border: 3px solid #cfa977; */
     
 }
 
 .dark{
     /* border: 3px solid rgb(29, 27, 27); */
-    background-color: rgb(29, 27, 27);
+    /* background-color: rgb(29, 27, 27); */
+    background-color: #779455;
 }
 
 .light:hover{
@@ -96,5 +118,11 @@ td{
 }
 
 #black{
-    color: red;
+    color: #565352;
+    text-shadow: 1px 0px 10px rgba(253, 253, 253, 0.8);
+}
+
+div{
+    color: #f8f8f7;
+    text-shadow: 2px 0px 10px rgba(29, 29, 29, 0.8);
 }

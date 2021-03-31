@@ -2,8 +2,11 @@
 var td = $("tr");
 var board=[];
 
-var light="#cfa977";
-var dark="rgb(29, 27, 27)";
+var deadBlackList=$(".deadblack ul");
+var deadWhiteList=$(".deadwhite ul");
+
+var dark="#779455";
+var light="#ebebd0";
 // this for loop will create a two dimensional array
 // where first [] represent column and second [] represent row
 // so we cna access the the borard with our ids representation a1,h4,g8
@@ -16,7 +19,7 @@ for (let i = 0; i < board.length; i++) {
     const column = board[i];
     for (let j = 0; j < column.length; j++) {
         column[j].id=(i+","+j);
-        column[j].innerHTML=i+","+j;   
+        //column[j].innerHTML=i+","+j;   
     }
 }
 
@@ -29,6 +32,7 @@ for (let i = 0; i < board.length; i++) {
 function Player(name, family) {
         this.name = name,
         this.family = family,
+        this.turn=false,
         this.kingAlive = true,
         this.pices = {
             king : {
@@ -171,32 +175,39 @@ function possibleMovesForPawn(loction) {
     let i = parseInt(loction.charAt(0));
     let j = parseInt(loction.charAt(2));
     let myFamily = board[i][j].getAttribute("family");
+    //console.log("MY FAMILY IS : "+myFamily)
     console.log("i= " + i + ", j= " + j);
 
     if (myFamily == "white") {
 
         // up for white
         if (i != 0) {
+
             let x = i - 1;
             let y = j;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == null) {
-                console.log("up x= " + x + ", y= " + y);
+            if (upfamily == null){
                 pawnMoves.push((x + "," + y));
             }
         }
-
         // up up for white
-        if (i == 6) {
-            let x = i - 2;
-            let y = j;
-            let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == null) {
-                console.log("up x= " + x + ", y= " + y);
-                pawnMoves.push((x + "," + y));
+        if (i != 0) {
+
+            if ( i == 6 ) {
+                let x = i - 2;
+                let y = j;
+                let upfamily = board[x][y].getAttribute("family");
+                if (upfamily == null){
+                    console.log(board[x-1][y].getAttribute("family") == myFamily +" *********")
+                    if (board[i-1][y].getAttribute("family") != myFamily) {
+                        pawnMoves.push((x + "," + y));
+                    }
+                }
             }
+            
         }
 
+  
         // up to right for white
         if (i != 0 && j < 7) {
             let x = i - 1;
@@ -219,26 +230,63 @@ function possibleMovesForPawn(loction) {
             }
         }
     } else {
+        console.log(myFamily+" %%%%%%");
 
         // up for black
-        if (i != 7) {
+        if (i != 0) {
+
             let x = i + 1;
             let y = j;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == null) {
+            if (upfamily == null){
                 pawnMoves.push((x + "," + y));
             }
+        }
+        // up up for black
+        if (i != 0) {
+
+            if ( i == 1 ) {
+                let x = i + 2;
+                let y = j;
+                let upfamily = board[x][y].getAttribute("family");
+                if (upfamily == null){
+                    console.log(board[x-1][y].getAttribute("family") == myFamily +" *********")
+                    if (board[i+1][y].getAttribute("family") != myFamily) {
+                        pawnMoves.push((x + "," + y));
+                    }
+                }
+            }
+            
         }
 
-        // up up for black
-        if (i == 1) {
-            let x = i + 2;
-            let y = j;
-            let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == null) {
-                pawnMoves.push((x + "," + y));
-            }
-        }
+        // up and up up for black
+        // if (i != 7) {
+            
+        //     let x = i;
+        //     for (let t = 0; t < 2; t++) { 
+        //         x +=1;
+        //         let y = j;
+        //         let upfamily = board[x][y].getAttribute("family");
+        //         if (upfamily == null){
+        //             if (t == 0)
+        //                 pawnMoves.push((x + "," + y));
+        //             else if( t == 1){
+        //                 console.log("i == 6 "+i);
+
+        //                 if ( i == 1 ) {
+        //                     console.log(myFamily+","+upfamily)
+        //                     if ( upfamily != myFamily ) {
+        //                         pawnMoves.push((x + "," + y));
+        //                         break;
+        //                     }
+        //                 }else
+        //                     break;
+        //             }
+        //         }else
+        //             break;
+        //     }
+        
+        // }
 
         // up to right for black
         if (i != 7 && j < 7) {
@@ -714,52 +762,274 @@ function possibleMoves(type,location){
 
 
 var clickonce = null;
-var moves=null;
+var moves = null;
+var counter = 1;
 
-$("td").click(function () {
+// function switchTurns(player1, player2) {
 
-    if (clickonce != null) {
-        console.log(clickonce.html());
-        console.log(clickonce.attr("id")+"-------------");
-        let temp = clickonce.html();
-        //clickonce.html($(this).html());
-        clickonce.html("");
-        $(this).html(temp);
-        clickonce = null;
-    } else {
+//     if (counter % 2 == 0) {
+//         player2.turn = true;
+//         player1.turn = false;
+
+
+//     } else {
+//         player1.turn = true;
+//         player2.turn = false;
+
+//     }
+
+// }
+
+// function gameOver(player1, player2) {
+
+//     if (counter == 2)
+//         return 1;
+
+//     if (!player1.kingAlive)
+//         return player2.name + " is the winner";
+//     else if (!player2.kingAlive)
+//         return player1.name + " is the winner";
+//     else
+//         return -1;
+// }
+
+
+
+// $("td[family='white']").click(whiteEventL());
+
+// function whiteEventL() {
+
+//             if (clickonce != null) {
+//                 let secondClick = $(this);
+    
+//                 if (moves.includes(secondClick.attr("id")) || moves.includes(secondClick.attr("id") + "k")) {
+    
+//                     onSecondClickColor(clickonce.attr("id"));
+    
+//                     let id = $(this).attr("id");
+//                     let i = parseInt(id.charAt(0));
+//                     let j = parseInt(id.charAt(2));
+    
+    
+//                     let family = clickonce.attr("family");
+//                     let type = clickonce.attr("type");
+//                     let innerhtmll = clickonce.html();
+    
+//                     board[i][j].innerHTML = innerhtmll;
+//                     board[i][j].setAttribute("family", family);
+//                     board[i][j].setAttribute("type", type);
+    
+    
+//                     clickonce.html("");
+//                     clickonce.attr("family", null);
+//                     clickonce.attr("type", null);
+//                     clickonce = null;
+//                     counter++;
+    
+//                 } else {
+//                     console.log("Wrong selection");
+//                     onSecondClickColor(clickonce.attr("id"));
+//                     clickonce = null;
+//                 }
+//             } else {
+//                 let id = $(this).attr("id");
+//                 onClickColor(id);
+//                 console.log($(this).html());
+//                 console.log($(this).attr('id'));
+//                 console.log($(this).attr('class'));
+//                 clickonce = $(this);
+//             }
+    
+    
+    
+// }
+
+// $("td[family='white']").bind("click",whiteEventL());
+
+
+// $("td[family='black']").click(blackEventL());
         
-        console.log($(this).html());
-        console.log($(this).attr('id'));
-        console.log($(this).attr('class'));
-        clickonce = $(this);
-    }
+$( document ).ready(function() {
 
+$("td").click(function(){
+    EventLClick($(this));
 });
+    
+    function EventLClick(tthis) {
+
+        console.log("inside black family click event")
+        if(clickonce == null ) {
+            let id = tthis.attr("id");
+            onClickColor(id);
+            console.log(tthis.html());
+            console.log(tthis.attr('id'));
+            console.log(tthis.attr('class'));
+            clickonce = tthis;
+            //tthis.removeEventListener("click",blackEventLClick);
+            // var element =document.querySelectorAll("td");
+            // element.addEventListener("click", function(){blackEventLDBLClick($(this))});
+        }else{
+            let secondClick = tthis;
+
+    if (moves.includes(secondClick.attr("id"))) {
+
+        console.log("ID = "+clickonce.attr("id"));
+        onSecondClickColor(clickonce.attr("id"));
+        
+        
+
+        let id = tthis.attr("id");
+        let i = parseInt(id.charAt(0));
+        let j = parseInt(id.charAt(2));
 
 
-$("td").mouseover(function () {
-    let i=$(this).attr('id').charAt(0);
-    let j=$(this).attr('id').charAt(2);
-    let type=board[i][j].getAttribute("type");
-    let arr=possibleMoves(type,(i+","+j));
-    moves=arr;
-    if (arr.length > 0 && arr != -1) {
-        for (let i = 0; i < arr.length; i++) {
-            console.log("arr[i]"+arr[i])
-            let iInd=arr[i].charAt(0);
-            let jInd=arr[i].charAt(2);
-            if(arr[i].length > 3){
-               // console.log("backgroundColor before change is = "+board[iInd][jInd].style.backgroundColor);
-                board[iInd][jInd].style.backgroundColor="#ff8a8adf";
-            }else{
-                board[iInd][jInd].style.backgroundColor="#ccffe0";
-            } 
+        let family = clickonce.attr("family");
+        let type = clickonce.attr("type");
+
+        console.log("family = "+family+"   , type = "+type);
+        let innerhtmll = clickonce.html();
+
+        board[i][j].innerHTML = innerhtmll;
+        board[i][j].setAttribute("family", family);
+        board[i][j].setAttribute("type", type);
+
+        $(".chess-board").toggleClass('rotateTable');
+        clickonce.html("");
+        clickonce.attr("family", null);
+        clickonce.attr("type", null);
+        clickonce = null;
+
+    }else if( moves.includes(secondClick.attr("id") + "k")){
+        let secondFamily = secondClick.attr("family");
+        let secondType = secondClick.attr("type");
+
+        
+
+        console.log("ID = "+clickonce.attr("id"));
+        onSecondClickColor(clickonce.attr("id"));
+        
+        
+
+        let id = tthis.attr("id");
+        let i = parseInt(id.charAt(0));
+        let j = parseInt(id.charAt(2));
+
+
+        let family = clickonce.attr("family");
+        let type = clickonce.attr("type");
+
+        console.log("the "+type+" from "+family+" family Killed the "+secondType+ " of the "+secondFamily+" family");
+        //console.log(");
+        let innerhtmll = clickonce.html();
+
+        board[i][j].innerHTML = innerhtmll;
+        board[i][j].setAttribute("family", family);
+        board[i][j].setAttribute("type", type);
+
+        $(".chess-board").toggleClass('rotateTable');
+        clickonce.html("");
+        clickonce.attr("family", null);
+        clickonce.attr("type", null);
+        clickonce = null;
+        
+    } else {
+        alert("Wrong selection");
+        onSecondClickColor(clickonce.attr("id"));
+        clickonce = null;
+        //removeAllBEvents();
+    }
         }
     }
+
+
+// $("td").dblclick(function(){
+//     blackEventLDBLClick($(this));
+// });
+
+//     function blackEventLDBLClick(tthis){
+//     console.log("inside black family dbclick event")
+// if (clickonce != null) {
+//     $("td[family='black']").unbind();
+//     let secondClick = tthis;
+
+//     if (moves.includes(secondClick.attr("id")) || moves.includes(secondClick.attr("id") + "k")) {
+
+//         console.log("ID = "+clickonce.attr("id"));
+//         onSecondClickColor(clickonce.attr("id"));
+
+//         let id = tthis.attr("id");
+//         let i = parseInt(id.charAt(0));
+//         let j = parseInt(id.charAt(2));
+
+
+//         let family = clickonce.attr("family");
+//         let type = clickonce.attr("type");
+//         console.log("family = "+family+"   , type = "+type);
+//         let innerhtmll = clickonce.html();
+
+//         board[i][j].innerHTML = innerhtmll;
+//         board[i][j].setAttribute("family", family);
+//         board[i][j].setAttribute("type", type);
+
+
+//         clickonce.html("");
+//         clickonce.attr("family", null);
+//         clickonce.attr("type", null);
+//         clickonce = null;
+//         removeAllBEvents();
+//         counter++;
+
+//     } else {
+//         console.log("Wrong selection");
+//         onSecondClickColor(clickonce.attr("id"));
+//         clickonce = null;
+//         removeAllBEvents();
+//     }
+// }
+
+// }
+
 });
 
+//$("td[family='white']").bind("click",whiteEventL($(this)));
 
-$("td").mouseout(function () {
+
+  
+// function removeAllBEvents(){
+//     $("td").off("dblclick",blackEventLDBLClick);
+//     $("td[family='black']").on(blackEventLClick);
+//    // $("td[family='black']").unbind();
+// }
+
+// function removeAllWEvents(){
+//     $("td").unbind();
+//    $("td[family='black']").bind("click",blackEventLClick($(this)));
+// }
+
+
+
+function onClickColor(id) {
+    let i = id.charAt(0);
+    let j = id.charAt(2);
+    let type = board[i][j].getAttribute("type");
+    let arr = possibleMoves(type, (i + "," + j));
+    moves = arr;
+    if (arr.length > 0 && arr != -1) {
+        for (let i = 0; i < arr.length; i++) {
+            console.log("arr[i]" + arr[i])
+            let iInd = arr[i].charAt(0);
+            let jInd = arr[i].charAt(2);
+            if (arr[i].length > 3) {
+                // console.log("backgroundColor before change is = "+board[iInd][jInd].style.backgroundColor);
+                board[iInd][jInd].style.backgroundColor = "#ff8a8adf";
+            } else {
+                board[iInd][jInd].style.backgroundColor = "#ccffe0";
+            }
+        }
+    }
+}
+
+function onSecondClickColor(id) {
     if (moves != null) {
         let arr = moves;
         if (arr.length > 0 && arr != -1) {
@@ -768,17 +1038,36 @@ $("td").mouseout(function () {
                 let iInd = arr[i].charAt(0);
                 let jInd = arr[i].charAt(2);
                 (arr[i].length > 3) ?
-                
-                (board[iInd][jInd].className=="dark") ?
-                board[iInd][jInd].style.backgroundColor = dark
-                : 
-                board[iInd][jInd].style.backgroundColor = light
-                :
-                (board[iInd][jInd].className=="dark")?board[iInd][jInd].style.backgroundColor = dark: board[iInd][jInd].style.backgroundColor = light;
-                
+
+                    (board[iInd][jInd].className == "dark") ?
+                        board[iInd][jInd].style.backgroundColor = dark
+                        :
+                        board[iInd][jInd].style.backgroundColor = light
+                    :
+                    (board[iInd][jInd].className == "dark") ? board[iInd][jInd].style.backgroundColor = dark : board[iInd][jInd].style.backgroundColor = light;
+
             }
         }
+        moves = null;
     }
 
-});
+}
+
+
+    // while (gameOver(player1, player2) == -1) {
+    //     switchTurns(player1, player2);
+
+    //     if (player1.turn) {
+    //         $("td[family='black']").unbind("click",blackEventL());
+    //         $("td[family='white']").bind("click",whiteEventL());
+    //     }else if(player2.turn){
+    //         $("td[family='white']").unbind("click",whiteEventL());
+    //         $("td[family='black']").bind("click",blackEventL());
+            
+    //     }
+    // }
+
+
+
+
 
