@@ -14,7 +14,7 @@
 
 ## Planning 
 
-
+![Planning for the project](/images/board.PNG)
 ---
 
 ## My Favorite Function 
