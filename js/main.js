@@ -1,3 +1,10 @@
+
+// this is the background color of the borad cells 
+var dark="#779455";
+var light="#ebebd0";
+
+// --------------------------- initialize Deads list --------------------------- \\
+
 // this will store the ul of dead pices
 var deadBlackList1=document.querySelector(".deadBlack #one");
 var deadBlackList2=document.querySelector(".deadBlack #two");
@@ -68,16 +75,13 @@ function addDead(type,family){
 
 }
 
-// this is the background color of the borad cells 
-var dark="#779455";
-var light="#ebebd0";
 
+// --------------------------- Setting board[][] array --------------------------- \\
 
 // git all the rows
 var td = $("tr");
 // create board array
 var board=[];
-
 
 // this for loop will create a two dimensional array
 // where first [] represent column and second [] represent row
@@ -96,7 +100,8 @@ for (let i = 0; i < board.length; i++) {
     }
 }
 
-//create player object constrcator
+// --------------------------- player object --------------------------- \\
+
 function Player(name, family) {
         this.name = name,
         this.family = family,
@@ -150,6 +155,8 @@ if (p2Name == null) {
     p2Name="Second player"
 }
 
+// --------------------------- initialize player 1 object --------------------------- \\
+
 // create player 1 object
 var player1 = new Player(p1Name, "white");
 
@@ -180,7 +187,7 @@ player1.pices.knight.place = ["7,1", "7,6"];
 player1.pices.pawn.value = "<div id='white'>&#9817;</div>";
 player1.pices.pawn.place = ["6,0","6,1","6,2","6,3","6,4","6,5","6,6","6,7"];
 
-
+// --------------------------- initialize player 2 object --------------------------- \\
 
 // create player 2 object
 var player2 = new Player(p2Name, "black");
@@ -253,6 +260,8 @@ function updateboard(board, player,family) {
 updateboard(board,player1,player1.family);
 updateboard(board,player2,player2.family);
 
+// --------------------------- possibleMoves --------------------------- \\
+
 function switchPawntoQueen(i,j,family){
 
     if (family == player1.family) {
@@ -264,7 +273,6 @@ function switchPawntoQueen(i,j,family){
         board[i][j].setAttribute("type","queen");
     }
 }
-
 
 function possibleMovesForPawn(loction) {
     let pawnMoves = [];
@@ -303,9 +311,6 @@ function possibleMovesForPawn(loction) {
             
         }
 
-        
-
-  
         // up to right for white
         if (i != 0 && j < 7) {
             let x = i - 1;
@@ -336,7 +341,6 @@ function possibleMovesForPawn(loction) {
         }
     } else {
         console.log(myFamily+" %%%%%%");
-
 
         // up for black
         if (i != 7) {
@@ -395,324 +399,6 @@ function possibleMovesForPawn(loction) {
         }
     }
     return pawnMoves;
-}
-
-function possibleMovesForKnight(loction){
-    let knightMoves=[];
-    let i=parseInt(loction.charAt(0));
-    let j=parseInt(loction.charAt(2));
-    let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
-    // up to right
-    if(i > 1 && j < 7){
-        let x = i - 2;
-        let y = j + 1;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // up to left
-    if(i > 1 && j > 0){
-        let x = i - 2;
-        let y = j - 1;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // down to right
-    if(i < 6 && j < 7){
-        let x = i + 2;
-        let y = j + 1;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // down to left
-    if(i < 6 && j > 0){
-        let x = i + 2;
-        let y = j - 1;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // left up
-    if(i != 0 && j > 1){
-        let x = i - 1;
-        let y = j - 2;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // left down
-    if(i != 7 && j > 1){
-        let x = i + 1;
-        let y = j - 2;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // right up
-    if(i != 0 && j < 6){
-        let x = i - 1;
-        let y = j + 2;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    // right down
-    if(i != 7 && j < 6){
-        let x = i + 1;
-        let y = j + 2;
-        let otherfamily = board[x][y].getAttribute("family");
-        if(otherfamily == null){
-            knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
-            knightMoves.push((x + "," + y + "k"));
-        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
-            knightMoves.push((x + "," + y + "kl"));
-        }
-    }
-
-    return knightMoves;
-}
-
-
-function possibleMovesForBishop(loction){
-    let bishopMoves=[];
-    let i=parseInt(loction.charAt(0));
-    let j=parseInt(loction.charAt(2));
-    let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
-    let tempX = i; 
-    let tempY = j; 
-
-
-    // up to left
-    while( tempX !=0 && tempY != 0){
-        tempX -= 1;
-        tempY -= 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            bishopMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            bishopMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    tempX = i;
-    tempY = j;
-
-    // up to right
-    while( tempX !=0 && tempY != 7){
-        tempX -= 1;
-        tempY += 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            bishopMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            bishopMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    
-    tempX = i;
-    tempY = j;
-
-    // down to left
-    while( tempX !=7 && tempY != 0){
-        tempX += 1;
-        tempY -= 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            bishopMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            bishopMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    
-    tempX = i;
-    tempY = j;
-
-    // down to right
-    while( tempX !=7 && tempY != 7){
-        tempX += 1;
-        tempY += 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            bishopMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            bishopMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    return bishopMoves;
-}
-
-
-function possibleMovesForRook(loction){
-    let rookMoves=[];
-    let i=parseInt(loction.charAt(0));
-    let j=parseInt(loction.charAt(2));
-    let myFamily=board[i][j].getAttribute("family");
-    console.log("i= "+i+", j= "+j);
-
-    let tempX = i; 
-    let tempY = j; 
-    
-    // up
-    while( tempX !=0 ){
-        tempX -= 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            rookMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            rookMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    
-    tempX = i; 
-    
-    // down
-    while( tempX !=7 ){
-        tempX += 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            rookMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            rookMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-    
-    tempX = i; 
-    tempY = j; 
-    
-    // right
-    while( tempY < 7 ){
-        tempY += 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            rookMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            rookMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    tempY = j; 
-    
-    // left
-    while( tempY > 0 ){
-        tempY -= 1;
-        console.log(tempX+","+tempY);
-        let otherfamily=board[tempX][tempY].getAttribute("family");
-        if(otherfamily == null){
-            rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
-            rookMoves.push((tempX + "," + tempY + "k"));
-            break;
-        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
-            rookMoves.push((tempX + "," + tempY + "kl"));
-            break;
-        }else if(otherfamily == myFamily){
-            break;
-        }
-    }
-
-    return rookMoves;
 }
 
 function possibleMovesForKing(loction) {
@@ -861,6 +547,322 @@ function possibleMovesForKing(loction) {
     return kingMoves;
 }
 
+function possibleMovesForKnight(loction){
+    let knightMoves=[];
+    let i=parseInt(loction.charAt(0));
+    let j=parseInt(loction.charAt(2));
+    let myFamily=board[i][j].getAttribute("family");
+    console.log("i= "+i+", j= "+j);
+
+    // up to right
+    if(i > 1 && j < 7){
+        let x = i - 2;
+        let y = j + 1;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // up to left
+    if(i > 1 && j > 0){
+        let x = i - 2;
+        let y = j - 1;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // down to right
+    if(i < 6 && j < 7){
+        let x = i + 2;
+        let y = j + 1;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // down to left
+    if(i < 6 && j > 0){
+        let x = i + 2;
+        let y = j - 1;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // left up
+    if(i != 0 && j > 1){
+        let x = i - 1;
+        let y = j - 2;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // left down
+    if(i != 7 && j > 1){
+        let x = i + 1;
+        let y = j - 2;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // right up
+    if(i != 0 && j < 6){
+        let x = i - 1;
+        let y = j + 2;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    // right down
+    if(i != 7 && j < 6){
+        let x = i + 1;
+        let y = j + 2;
+        let otherfamily = board[x][y].getAttribute("family");
+        if(otherfamily == null){
+            knightMoves.push((x + "," + y));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
+            knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
+        }
+    }
+
+    return knightMoves;
+}
+
+function possibleMovesForRook(loction){
+    let rookMoves=[];
+    let i=parseInt(loction.charAt(0));
+    let j=parseInt(loction.charAt(2));
+    let myFamily=board[i][j].getAttribute("family");
+    console.log("i= "+i+", j= "+j);
+
+    let tempX = i; 
+    let tempY = j; 
+    
+    // up
+    while( tempX !=0 ){
+        tempX -= 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            rookMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    
+    tempX = i; 
+    
+    // down
+    while( tempX !=7 ){
+        tempX += 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            rookMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+    
+    tempX = i; 
+    tempY = j; 
+    
+    // right
+    while( tempY < 7 ){
+        tempY += 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            rookMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    tempY = j; 
+    
+    // left
+    while( tempY > 0 ){
+        tempY -= 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            rookMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    return rookMoves;
+}
+
+function possibleMovesForBishop(loction){
+    let bishopMoves=[];
+    let i=parseInt(loction.charAt(0));
+    let j=parseInt(loction.charAt(2));
+    let myFamily=board[i][j].getAttribute("family");
+    console.log("i= "+i+", j= "+j);
+
+    let tempX = i; 
+    let tempY = j; 
+
+
+    // up to left
+    while( tempX !=0 && tempY != 0){
+        tempX -= 1;
+        tempY -= 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            bishopMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    tempX = i;
+    tempY = j;
+
+    // up to right
+    while( tempX != 0 && tempY != 7 ){
+        tempX -= 1;
+        tempY += 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            bishopMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    
+    tempX = i;
+    tempY = j;
+
+    // down to left
+    while( tempX != 7 && tempY != 0 ){
+        tempX += 1;
+        tempY -= 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            bishopMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    
+    tempX = i;
+    tempY = j;
+
+    // down to right
+    while( tempX !=7 && tempY != 7){
+        tempX += 1;
+        tempY += 1;
+        console.log(tempX+","+tempY);
+        let otherfamily=board[tempX][tempY].getAttribute("family");
+        if(otherfamily == null){
+            bishopMoves.push((tempX + "," + tempY));
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
+            bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
+            break;
+        }else if(otherfamily == myFamily){
+            break;
+        }
+    }
+
+    return bishopMoves;
+}
+
 function possibleMovesForQueen(loction) {
     let queenMoves = [];
     
@@ -910,7 +912,8 @@ function possibleMoves(type,location){
     return -1;
 }
 
-var tt=null;
+
+// --------------------------- checkmate --------------------------- \\
 
 function isKill(arr){
     for (let i = 0; i < arr.length; i++) {
@@ -938,6 +941,9 @@ function checkmate(type,location) {
 
     console.log("no Checkmate :(");
 }
+
+// --------------------------- Event Listener click --------------------------- \\
+
 
 var clickonce = null;
 var moves = null;
@@ -1135,15 +1141,6 @@ $(document).ready(function () {
 
 });
 
-function gameOver(type){
-    (type == "white")? 
-    alert("Game Over the winner is "+p1Name)
-    :
-    alert("Game Over the winner is "+p2Name);
-    
-    $("td").unbind("click");
-}
-
 
 function onClickColor(id) {
     let i = id.charAt(0);
@@ -1189,5 +1186,18 @@ function onSecondClickColor(id) {
     }
 
 }
+
+// --------------------------- GameOver --------------------------- \\
+
+function gameOver(type){
+    (type == "white")? 
+    alert("Game Over the winner is "+p1Name)
+    :
+    alert("Game Over the winner is "+p2Name);
+    
+    $("td").unbind("click");
+}
+
+
 
 
