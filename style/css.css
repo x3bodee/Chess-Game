@@ -2,7 +2,8 @@ body{
     margin: 0;
     padding: 0;
     background-color: #779455;
-    
+    display: flex;
+    flex-direction: column;
 }
 
 nav{
@@ -20,6 +21,10 @@ section{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-top: 40px;
+    -moz-transition: transform 2s;
+    -webkit-transition: transform 2s;
+    transition: transform 2s;
 }
 
 ul{
@@ -64,20 +69,40 @@ td{
 .deadWhite{
     color: #f8f8f7;
     text-shadow: 2px 0px 10px rgba(29, 29, 29, 0.8);
+    display: flex;
+    flex-direction: row;
+}
+
+
+.deadWhite ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .deadBlack{
     color: #565352;
     text-shadow: 1px 0px 10px rgba(253, 253, 253, 0.8);
+    display: flex;
+    flex-direction: row;
 }
 
-.chess-board {
-    margin-top: 40px;
-    -moz-transition: transform 2s;
-    -webkit-transition: transform 2s;
-    transition: transform 2s;
-  }
+.deadBlack ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer{
+
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  font-size: 18px;
   
+}
+
 .rotateTable {
     transform: rotate(+180deg);
 }
@@ -125,6 +150,31 @@ td{
 div{
     color: #f8f8f7;
     text-shadow: 2px 0px 10px rgba(29, 29, 29, 0.8);
-    /* color : ; */
-
 }
+
+@media screen and (max-width: 600px) {
+    
+    section{
+        margin-top: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .deadBlack ul{
+        margin-top: 20px;
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .deadWhite ul{
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+    }
+    .chess-board {
+        margin: 5px 2px;
+    }
+  }

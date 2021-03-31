@@ -1,15 +1,87 @@
-// TODO: create board object
-var td = $("tr");
-var board=[];
+// this will store the ul of dead pices
+var deadBlackList1=document.querySelector(".deadBlack #one");
+var deadBlackList2=document.querySelector(".deadBlack #two");
+var deadWhiteList1=document.querySelector(".deadWhite #one");
+var deadWhiteList2=document.querySelector(".deadWhite #two");
+var deadWhiteCounter=0;
+var deadBlackCounter=0;
 
-var deadBlackList=$(".deadblack ul");
-var deadWhiteList=$(".deadwhite ul");
+function addDead(type,family){
+    if(family == "white"){
+        if( deadWhiteCounter >8 ){
+            if ( type == "pawn" ) {
+                deadBlackList2.innerHTML+=player1.pices.pawn.value;
+            }else if( type == "queen" ){
+                deadBlackList2.innerHTML+=player1.pices.queen.value;
+            }else if( type == "knight" ){
+                deadBlackList2.innerHTML+=player1.pices.knight.lValue;;
+            }else if( type == "rook" ){
+                deadBlackList2.innerHTML+=player1.pices.rook.lValue;;
+            }else if( type == "bishop" ){
+                deadBlackList2.innerHTML+=player1.pices.bishop.lValue;;
+            }
+            deadWhiteCounter++;
+        }else{
+            if ( type == "pawn" ) {
+                deadBlackList1.innerHTML+=player1.pices.pawn.value;
+                console.log("addDEAD ----- : "+player1.pices.pawn.value);
+            }else if( type == "queen" ){
+                deadBlackList1.innerHTML+=player1.pices.queen.value;
+            }else if( type == "knight" ){
+                deadBlackList1.innerHTML+=player1.pices.knight.lValue;
+            }else if( type == "rook" ){
+                deadBlackList1.innerHTML+=player1.pices.rook.lValue;
+            }else if( type == "bishop" ){
+                deadBlackList1.innerHTML+=player1.pices.bishop.lValue;
+            }
+            deadWhiteCounter++;
+        }
+    }else{
+        if(deadBlackCounter >8){
+            if ( type == "pawn" ) {
+                deadWhiteList2.innerHTML+=player2.pices.pawn.value;
+            }else if( type == "queen" ){
+                deadWhiteList2.innerHTML+=player2.pices.queen.value;
+            }else if( type == "knight" ){
+                deadWhiteList2.innerHTML+=player2.pices.knight.lValue;
+            }else if( type == "rook" ){
+                deadWhiteList2.innerHTML+=player2.pices.rook.lValue;
+            }else if( type == "bishop" ){
+                deadWhiteList2.innerHTML+=player2.pices.bishop.lValue;
+            }
+            deadBlackCounter++;
+        }else{
+            if ( type == "pawn" ) {
+                deadWhiteList1.innerHTML+=player2.pices.pawn.value;
+            }else if( type == "queen" ){
+                deadWhiteList1.innerHTML+=player2.pices.queen.value;
+            }else if( type == "knight" ){
+                deadWhiteList1.innerHTML+=player2.pices.knight.lValue;
+            }else if( type == "rook" ){
+                deadWhiteList1.innerHTML+=player2.pices.rook.lValue;
+            }else if( type == "bishop" ){
+                deadWhiteList1.innerHTML+=player2.pices.bishop.lValue;
+            }
+            deadBlackCounter++; 
+        }
+    }
 
+}
+
+// this is the background color of the borad cells 
 var dark="#779455";
 var light="#ebebd0";
+
+
+// git all the rows
+var td = $("tr");
+// create board array
+var board=[];
+
+
 // this for loop will create a two dimensional array
 // where first [] represent column and second [] represent row
-// so we cna access the the borard with our ids representation a1,h4,g8
+// so we cna access the the borard with our ids representation 0,0 , 5,3 ...
 for (let i = 0; i < 8; i++) {
     board.push(td[i].cells);
     console.log(board[i]);
@@ -19,20 +91,15 @@ for (let i = 0; i < board.length; i++) {
     const column = board[i];
     for (let j = 0; j < column.length; j++) {
         column[j].id=(i+","+j);
+        //column[j].style.color="red";
         //column[j].innerHTML=i+","+j;   
     }
 }
 
-// for (let i = 0; i < td.length; i++) {
-//     console.log("elemet "+i+" index = "+td[i].getAttribute("index"));
-//     td[i].innerHTML=i+1;
-// }
-
-// TODO: create player object constrcator
+//create player object constrcator
 function Player(name, family) {
         this.name = name,
         this.family = family,
-        this.turn=false,
         this.kingAlive = true,
         this.pices = {
             king : {
@@ -69,65 +136,83 @@ function Player(name, family) {
                 index: ["", "", "", "", "", "", "", ""]
             }
         }
-
-
-
 }
 
-let p1Name = "P1";
-let p2Name = "P2";
+var p1Name = prompt("Please enter first player name");
 
-// TODO: create player 1 object
+if (p1Name == null) {
+  p1Name="First player"
+}
+
+var p2Name = prompt("Please enter second player name");
+
+if (p2Name == null) {
+    p2Name="Second player"
+}
+
+// create player 1 object
 var player1 = new Player(p1Name, "white");
 
-player1.pices.king.value = "<div>&#9812;</div>";
+// king values 
+player1.pices.king.value = "<div id='white'>&#9812;</div>";
 player1.pices.king.place = "7,4";
-//
-player1.pices.queen.value = "<div>&#9813;</div>";
+
+// queen values
+player1.pices.queen.value = "<div id='white'>&#9813;</div>";
 player1.pices.queen.place = "7,3";
-//
-player1.pices.rook.lValue = "<div>&#9814;</div>";
-player1.pices.rook.rValue = "<div>&#9814;</div>";
+
+// rook values
+player1.pices.rook.lValue = "<div id='white'>&#9814;</div>";
+player1.pices.rook.rValue = "<div id='white'>&#9814;</div>";
 player1.pices.rook.place = ["7,0", "7,7"];
-//
-player1.pices.bishop.lValue = "<div>&#9815;</div>";
-player1.pices.bishop.rValue = "<div>&#9815;</div>";
+
+// bishop values
+player1.pices.bishop.lValue = "<div id='white'>&#9815;</div>";
+player1.pices.bishop.rValue = "<div id='white'>&#9815;</div>";
 player1.pices.bishop.place = ["7,2", "7,5"];
-//
-player1.pices.knight.lValue = '<div class="whiteScaleToRight">&#9816;</div>';
-player1.pices.knight.rValue = "<div>&#9816;</div>";
+
+// knight values
+player1.pices.knight.lValue = "<div id='white' class='whiteScaleToRight'>&#9816;</div>";
+player1.pices.knight.rValue = "<div id='white'>&#9816;</div>";
 player1.pices.knight.place = ["7,1", "7,6"];
-//
-player1.pices.pawn.value = "<div>&#9817;</div>";
+
+// pawn values
+player1.pices.pawn.value = "<div id='white'>&#9817;</div>";
 player1.pices.pawn.place = ["6,0","6,1","6,2","6,3","6,4","6,5","6,6","6,7"];
 
 
 
-// TODO: create player 2 object
+// create player 2 object
 var player2 = new Player(p2Name, "black");
 
+// king values
 player2.pices.king.value = "<div class='scaleToDown' id='black'>&#9818;</div>";
 player2.pices.king.place = "0,4";
-//
+
+// queen values
 player2.pices.queen.value = "<div class='scaleToDown' id='black'>&#9819;</div>";
 player2.pices.queen.place = "0,3";
-//
+
+// rook values
 player2.pices.rook.lValue = "<div class='scaleToDown' id='black'>&#9820;</div>";
 player2.pices.rook.rValue = "<div class='scaleToDown' id='black'>&#9820;</div>";
 player2.pices.rook.place = ["0,0", "0,7"];
-//
+
+// bishop values
 player2.pices.bishop.lValue = "<div class='scaleToDown' id='black'>&#9821;</div>";
 player2.pices.bishop.rValue = "<div class='scaleToDown' id='black'>&#9821;</div>";
 player2.pices.bishop.place = ["0,2", "0,5"];
-//
+
+// knight values
 player2.pices.knight.lValue = "<div class='blackScaleToleft' id='black'>&#9822;</div>";
 player2.pices.knight.rValue = "<div class='scaleToDown' id='black'>&#9822;</div>";
 player2.pices.knight.place = ["0,1", "0,6"];
-//
+
+// pawn values
 player2.pices.pawn.value = "<div class='scaleToDown' id='black'>&#9823;</div>";
 player2.pices.pawn.place = ["1,0","1,1","1,2","1,3","1,4","1,5","1,6","1,7"];
 
-
+// this method will update the board cells with the player positions
 function updateboard(board, player,family) {
     
     for (let pacse in player.pices) {
@@ -168,6 +253,17 @@ function updateboard(board, player,family) {
 updateboard(board,player1,player1.family);
 updateboard(board,player2,player2.family);
 
+function switchPawntoQueen(i,j,family){
+
+    if (family == player1.family) {
+        board[i][j].innerHTML=player1.pices.queen.value;
+        board[i][j].setAttribute("type","queen");
+       
+    }else if(family == player2.family){
+        board[i][j].innerHTML=player2.pices.queen.value;
+        board[i][j].setAttribute("type","queen");
+    }
+}
 
 
 function possibleMovesForPawn(loction) {
@@ -207,16 +303,22 @@ function possibleMovesForPawn(loction) {
             
         }
 
+        
+
   
         // up to right for white
         if (i != 0 && j < 7) {
             let x = i - 1;
             let y = j + 1;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == "black") {
+            if (upfamily == "black" && board[x][y].getAttribute("type") != "king") {
                 console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            }else if (upfamily == "black" && board[x][y].getAttribute("type") == "king") {
+                console.log("up to right x= " + x + ", y= " + y);
+                pawnMoves.push((x + "," + y + "kl"));
             }
+            
         }
 
         // up to left for white
@@ -224,16 +326,20 @@ function possibleMovesForPawn(loction) {
             let x = i - 1;
             let y = j - 1;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == "black") {
-                console.log("up to left x= " + x + ", y= " + y);
+            if (upfamily == "black" && board[x][y].getAttribute("type") != "king") {
+                console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            }else if (upfamily == "black" && board[x][y].getAttribute("type") == "king") {
+                console.log("up to right x= " + x + ", y= " + y);
+                pawnMoves.push((x + "," + y + "kl"));
             }
         }
     } else {
         console.log(myFamily+" %%%%%%");
 
+
         // up for black
-        if (i != 0) {
+        if (i != 7) {
 
             let x = i + 1;
             let y = j;
@@ -242,8 +348,9 @@ function possibleMovesForPawn(loction) {
                 pawnMoves.push((x + "," + y));
             }
         }
+
         // up up for black
-        if (i != 0) {
+        if (i != 7) {
 
             if ( i == 1 ) {
                 let x = i + 2;
@@ -259,42 +366,17 @@ function possibleMovesForPawn(loction) {
             
         }
 
-        // up and up up for black
-        // if (i != 7) {
-            
-        //     let x = i;
-        //     for (let t = 0; t < 2; t++) { 
-        //         x +=1;
-        //         let y = j;
-        //         let upfamily = board[x][y].getAttribute("family");
-        //         if (upfamily == null){
-        //             if (t == 0)
-        //                 pawnMoves.push((x + "," + y));
-        //             else if( t == 1){
-        //                 console.log("i == 6 "+i);
-
-        //                 if ( i == 1 ) {
-        //                     console.log(myFamily+","+upfamily)
-        //                     if ( upfamily != myFamily ) {
-        //                         pawnMoves.push((x + "," + y));
-        //                         break;
-        //                     }
-        //                 }else
-        //                     break;
-        //             }
-        //         }else
-        //             break;
-        //     }
-        
-        // }
-
         // up to right for black
         if (i != 7 && j < 7) {
             let x = i + 1;
             let y = j + 1;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == "white") {
+            if (upfamily == "white" && board[x][y].getAttribute("type") != "king") {
+                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            }else if (upfamily == "white" && board[x][y].getAttribute("type") == "king") {
+                //console.log("up to right x= " + x + ", y= " + y);
+                pawnMoves.push((x + "," + y + "kl"));
             }
         }
 
@@ -303,8 +385,12 @@ function possibleMovesForPawn(loction) {
             let x = i + 1;
             let y = j - 1;
             let upfamily = board[x][y].getAttribute("family");
-            if (upfamily == "white") {
+            if (upfamily == "white" && board[x][y].getAttribute("type") != "king") {
+                //console.log("up to right x= " + x + ", y= " + y);
                 pawnMoves.push((x + "," + y + "k"));
+            }else if (upfamily == "white" && board[x][y].getAttribute("type") == "king") {
+                //console.log("up to right x= " + x + ", y= " + y);
+                pawnMoves.push((x + "," + y + "kl"));
             }
         }
     }
@@ -325,8 +411,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -337,8 +425,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -349,8 +439,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -361,8 +453,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -373,8 +467,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -385,8 +481,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -397,8 +495,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -409,8 +509,10 @@ function possibleMovesForKnight(loction){
         let otherfamily = board[x][y].getAttribute("family");
         if(otherfamily == null){
             knightMoves.push((x + "," + y));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") != "king"){
             knightMoves.push((x + "," + y + "k"));
+        }else if(otherfamily != myFamily && board[x][y].getAttribute("type") == "king"){
+            knightMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -437,8 +539,11 @@ function possibleMovesForBishop(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -456,8 +561,11 @@ function possibleMovesForBishop(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -476,8 +584,11 @@ function possibleMovesForBishop(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -496,8 +607,11 @@ function possibleMovesForBishop(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             bishopMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             bishopMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            bishopMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -525,8 +639,11 @@ function possibleMovesForRook(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -543,8 +660,11 @@ function possibleMovesForRook(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -561,8 +681,11 @@ function possibleMovesForRook(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -578,8 +701,11 @@ function possibleMovesForRook(loction){
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
-        }else if(otherfamily != myFamily){
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") != "king"){
             rookMoves.push((tempX + "," + tempY + "k"));
+            break;
+        }else if(otherfamily != myFamily && board[tempX][tempY].getAttribute("type") == "king"){
+            rookMoves.push((tempX + "," + tempY + "kl"));
             break;
         }else if(otherfamily == myFamily){
             break;
@@ -605,9 +731,12 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             console.log("up x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
-            pawnMoves.push((x + "," + y + "k"));
+            kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -619,9 +748,12 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -633,9 +765,12 @@ function possibleMovesForKing(loction) {
         if (otherfamily == null) {
             //console.log("up to left x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -647,9 +782,12 @@ function possibleMovesForKing(loction) {
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -660,9 +798,12 @@ function possibleMovesForKing(loction) {
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -673,9 +814,12 @@ function possibleMovesForKing(loction) {
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -687,9 +831,12 @@ function possibleMovesForKing(loction) {
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -700,9 +847,12 @@ function possibleMovesForKing(loction) {
         let otherfamily = board[x][y].getAttribute("family");
         if (otherfamily == null) {
             kingMoves.push((x + "," + y));
-        } else if (otherfamily != myFamily) {
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") != "king") {
             //console.log("up to right x= " + x + ", y= " + y);
             kingMoves.push((x + "," + y + "k"));
+        } else if (otherfamily != myFamily && board[x][y].getAttribute("type") == "king") {
+            //console.log("up to right x= " + x + ", y= " + y);
+            kingMoves.push((x + "," + y + "kl"));
         }
     }
 
@@ -760,24 +910,52 @@ function possibleMoves(type,location){
     return -1;
 }
 
+var tt=null;
+
+function isKill(arr){
+    for (let i = 0; i < arr.length; i++) {
+        let l=arr[i].length;
+        if(arr[i].charAt(l-1) == "l"){
+            return true;
+        }
+    }
+    return false;
+}
+
+// it's needs improvments
+function checkmate(type,location) {
+    let arr = possibleMoves(type, location);
+    tt=arr;
+    if (isKill(arr)) {
+        if (type == "black") {
+            alert(player2.name + " watch out it's Checkmate");
+            console.log(player2.name + " watch out it's Checkmate");
+        } else {
+            alert(player1.name + " watch out it's Checkmate");
+            console.log(player1.name + " watch out it's Checkmate");
+        }
+    }
+
+    console.log("no Checkmate :(");
+}
 
 var clickonce = null;
 var moves = null;
 var bcounter = 1;
 var wcounter = 1;
 
-$( document ).ready(function() {
+$(document).ready(function () {
 
-$("td").click(function(){
-    EventLClick($(this));
-});
+    $("td").click(function () {
+        EventLClick($(this));
+    });
 
-function EventLClick(tthis) {
-        
+    function EventLClick(tthis) {
+
         console.log("inside black family click event")
         if (clickonce == null) {
             // then it's white turn
-            if(bcounter == wcounter){
+            if (bcounter == wcounter) {
                 if (tthis.attr("family") == "white") {
                     let id = tthis.attr("id");
                     onClickColor(id);
@@ -785,12 +963,21 @@ function EventLClick(tthis) {
                     console.log(tthis.attr('id'));
                     console.log(tthis.attr('class'));
                     clickonce = tthis;
-                    
-                }else{
-                    alert("Select one of your pices\nit is "+p1Name+" turn now");
-                   
+
+                    console.log("check for switch PAWN TO QUEEN " + (id.charAt(0) == 0 && tthis.attr("type") == "pawn"));
+                    if (id.charAt(0) == 0 && tthis.attr("type") == "pawn") {
+                        switchPawntoQueen(id.charAt(0), id.charAt(2), "white");
+                        wcounter++;
+                        $(".chess-board").toggleClass('rotateTable');
+                        clickonce = null;
+                    }
+
+
+                } else {
+                    alert("Select one of your pices\nit is " + p1Name + " turn now");
+
                 }
-            }else{
+            } else {
                 if (tthis.attr("family") == "black") {
                     let id = tthis.attr("id");
                     onClickColor(id);
@@ -798,18 +985,25 @@ function EventLClick(tthis) {
                     console.log(tthis.attr('id'));
                     console.log(tthis.attr('class'));
                     clickonce = tthis;
-                    
-                }else{
-                    alert("Select one of your pices\nit is "+p2Name+" turn now");
+
+                    console.log("check for switch PAWN TO QUEEN " + (id.charAt(0) == 7 && tthis.attr("type") == "pawn"));
+                    if ((id.charAt(0) == 7) && tthis.attr("type") == "pawn") {
+                        switchPawntoQueen(id.charAt(0), id.charAt(2), "black");
+                        bcounter++;
+                        $(".chess-board").toggleClass('rotateTable');
+                        clickonce = null;
+                    }
+
+
+                } else {
+                    alert("Select one of your pices\nit is " + p2Name + " turn now");
                 }
             }
-            
-            //tthis.removeEventListener("click",blackEventLClick);
-            // var element =document.querySelectorAll("td");
-            // element.addEventListener("click", function(){blackEventLDBLClick($(this))});
+
+
         } else {
             let secondClick = tthis;
-            
+
             if (moves.includes(secondClick.attr("id"))) {
 
                 console.log("ID = " + clickonce.attr("id"));
@@ -838,13 +1032,56 @@ function EventLClick(tthis) {
                 clickonce.attr("type", null);
                 clickonce = null;
 
-                if(family == "white")
+                if (family == "white")
                     wcounter++;
                 else
                     bcounter++;
 
-                $(".chess-board").toggleClass('rotateTable');
+                $("section").toggleClass('rotateTable');
+
             } else if (moves.includes(secondClick.attr("id") + "k")) {
+                let secondFamily = secondClick.attr("family");
+                let secondType = secondClick.attr("type");
+                let secondhtml = secondClick.html("type");
+
+
+
+                console.log("ID = " + clickonce.attr("id"));
+                onSecondClickColor(clickonce.attr("id"));
+
+
+
+                let id = tthis.attr("id");
+                let i = parseInt(id.charAt(0));
+                let j = parseInt(id.charAt(2));
+
+
+                let family = clickonce.attr("family");
+                let type = clickonce.attr("type");
+
+                console.log("the " + type + " from " + family + " family Killed the " + secondType + " of the " + secondFamily + " family");
+                //console.log(");
+                let innerhtmll = clickonce.html();
+
+                board[i][j].innerHTML = innerhtmll;
+                board[i][j].setAttribute("family", family);
+                board[i][j].setAttribute("type", type);
+
+                clickonce.html("");
+                clickonce.attr("family", null);
+                clickonce.attr("type", null);
+                clickonce = null;
+
+                if (family == "white"){
+                    wcounter++;
+                    addDead(secondType,secondFamily);
+                }else{
+                    bcounter++;
+                    addDead(secondType,secondFamily);
+                }
+
+                $("section").toggleClass('rotateTable');
+            } else if (moves.includes(secondClick.attr("id") + "kl")) {
                 let secondFamily = secondClick.attr("family");
                 let secondType = secondClick.attr("type");
 
@@ -877,22 +1114,35 @@ function EventLClick(tthis) {
                 clickonce.attr("type", null);
                 clickonce = null;
 
-                if(family == "white")
-                    wcounter++;
+                if (family == "white")
+                    gameOver(family);
                 else
-                    bcounter++;
+                    gameOver(family);
 
-                $(".chess-board").toggleClass('rotateTable');
+
             } else {
-                alert("Wrong selection");
+                console.log("Wrong selection");
                 onSecondClickColor(clickonce.attr("id"));
                 clickonce = null;
+
                 //removeAllBEvents();
             }
+            let idd = secondClick.attr("id");
+            let typee = secondClick.attr("type");
+            checkmate(typee,idd);
         }
-}
+    }
 
 });
+
+function gameOver(type){
+    (type == "white")? 
+    alert("Game Over the winner is "+p1Name)
+    :
+    alert("Game Over the winner is "+p2Name);
+    
+    $("td").unbind("click");
+}
 
 
 function onClickColor(id) {
@@ -941,92 +1191,3 @@ function onSecondClickColor(id) {
 }
 
 
-    
-function EventLClickkk(tthis) {
-
-    if(bcounter == wcounter){
-        
-    }
-        console.log("inside black family click event")
-        if(clickonce == null ) {
-            let id = tthis.attr("id");
-            onClickColor(id);
-            console.log(tthis.html());
-            console.log(tthis.attr('id'));
-            console.log(tthis.attr('class'));
-            clickonce = tthis;
-            //tthis.removeEventListener("click",blackEventLClick);
-            // var element =document.querySelectorAll("td");
-            // element.addEventListener("click", function(){blackEventLDBLClick($(this))});
-        }else{
-            let secondClick = tthis;
-
-    if (moves.includes(secondClick.attr("id"))) {
-
-        console.log("ID = "+clickonce.attr("id"));
-        onSecondClickColor(clickonce.attr("id"));
-        
-        
-
-        let id = tthis.attr("id");
-        let i = parseInt(id.charAt(0));
-        let j = parseInt(id.charAt(2));
-
-
-        let family = clickonce.attr("family");
-        let type = clickonce.attr("type");
-
-        console.log("family = "+family+"   , type = "+type);
-        let innerhtmll = clickonce.html();
-
-        board[i][j].innerHTML = innerhtmll;
-        board[i][j].setAttribute("family", family);
-        board[i][j].setAttribute("type", type);
-
-        $(".chess-board").toggleClass('rotateTable');
-        clickonce.html("");
-        clickonce.attr("family", null);
-        clickonce.attr("type", null);
-        clickonce = null;
-
-    }else if( moves.includes(secondClick.attr("id") + "k")){
-        let secondFamily = secondClick.attr("family");
-        let secondType = secondClick.attr("type");
-
-        
-
-        console.log("ID = "+clickonce.attr("id"));
-        onSecondClickColor(clickonce.attr("id"));
-        
-        
-
-        let id = tthis.attr("id");
-        let i = parseInt(id.charAt(0));
-        let j = parseInt(id.charAt(2));
-
-
-        let family = clickonce.attr("family");
-        let type = clickonce.attr("type");
-
-        console.log("the "+type+" from "+family+" family Killed the "+secondType+ " of the "+secondFamily+" family");
-        //console.log(");
-        let innerhtmll = clickonce.html();
-
-        board[i][j].innerHTML = innerhtmll;
-        board[i][j].setAttribute("family", family);
-        board[i][j].setAttribute("type", type);
-
-        $(".chess-board").toggleClass('rotateTable');
-        clickonce.html("");
-        clickonce.attr("family", null);
-        clickonce.attr("type", null);
-        clickonce = null;
-        
-    } else {
-        alert("Wrong selection");
-        onSecondClickColor(clickonce.attr("id"));
-        clickonce = null;
-        //removeAllBEvents();
-    }
-        }
-}
