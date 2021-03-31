@@ -32,7 +32,6 @@ function addDead(type,family){
         }else{
             if ( type == "pawn" ) {
                 deadBlackList1.innerHTML+=player1.pices.pawn.value;
-                console.log("addDEAD ----- : "+player1.pices.pawn.value);
             }else if( type == "queen" ){
                 deadBlackList1.innerHTML+=player1.pices.queen.value;
             }else if( type == "knight" ){
@@ -89,7 +88,6 @@ var board=[];
 // so we cna access the the borard with our ids representation 0,0 , 5,3 ...
 for (let i = 0; i < 8; i++) {
     board.push(td[i].cells);
-    console.log(board[i]);
 }
 
 // add to each cell an ID
@@ -763,7 +761,7 @@ function possibleMovesForRook(loction){
     // k represent kill and l represent the checkmate.
     while( tempX !=7 ){
         tempX += 1;
-        console.log(tempX+","+tempY);
+        
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
@@ -789,7 +787,7 @@ function possibleMovesForRook(loction){
     // k represent kill and l represent the checkmate
     while( tempY < 7 ){
         tempY += 1;
-        console.log(tempX+","+tempY);
+        
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
@@ -814,7 +812,7 @@ function possibleMovesForRook(loction){
     // k represent kill and l represent the checkmate
     while( tempY > 0 ){
         tempY -= 1;
-        console.log(tempX+","+tempY);
+
         let otherfamily=board[tempX][tempY].getAttribute("family");
         if(otherfamily == null){
             rookMoves.push((tempX + "," + tempY));
@@ -1250,11 +1248,10 @@ function onClickColor(id) {
     moves = arr;
     if (arr.length > 0 && arr != -1) {
         for (let i = 0; i < arr.length; i++) {
-            console.log("arr[i]" + arr[i])
+            
             let iInd = arr[i].charAt(0);
             let jInd = arr[i].charAt(2);
             if (arr[i].length > 3) {
-                // console.log("backgroundColor before change is = "+board[iInd][jInd].style.backgroundColor);
                 board[iInd][jInd].style.backgroundColor = "#ff8a8adf";
             } else {
                 board[iInd][jInd].style.backgroundColor = "#cfa977";
@@ -1268,7 +1265,7 @@ function onSecondClickColor(id) {
         let arr = moves;
         if (arr.length > 0 && arr != -1) {
             for (let i = 0; i < arr.length; i++) {
-                console.log("arr[i]" + arr[i])
+                
                 let iInd = arr[i].charAt(0);
                 let jInd = arr[i].charAt(2);
                 (arr[i].length > 3) ?
