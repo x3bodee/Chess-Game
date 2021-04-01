@@ -2,6 +2,14 @@
 
 ---
 
+##### Link to the Gamev[Live Link](https://pages.git.generalassemb.ly/x3bodee/Unit_1_Project/)
+
+######  Special thanks to Sager Alarifi, Saad Iqbal, Sara Bin Kuddah and Yasir Al-Muhtrish :sparkling_heart: :sparkling_heart:
+
+
+
+
+
 ## Technical Requirements
 
 - HTML
